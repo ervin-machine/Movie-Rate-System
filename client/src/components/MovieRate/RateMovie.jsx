@@ -60,8 +60,9 @@ function RateMovie({ movieListRate = [], input = '' }) {
         const token = await getAccessTokenSilently()
         Axios.post('http://localhost:4000/rate-movie', {
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+                authorization: `Bearer ${token}`
             },
             title: title,
             rate: rate
@@ -90,13 +91,13 @@ function RateMovie({ movieListRate = [], input = '' }) {
                                 }}
                                 />
                                 <p className="movie-name">{movie.title}</p>
-                                <p>Average rating: {movie.vote_average}</p>
                                 <Rating
                                     name={movie.title}
                                     value={movie.vote}
                                     onChange={(event, newValue) => {
                                         setRate(newValue);
                                     }}
+                                    onClick={handleRate}
                                 />
                             </div>
                         )

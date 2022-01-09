@@ -44,7 +44,6 @@ function SerieList({ serieList = [], input = '' }) {
                                 <p>{serie.overview}</p>
                                 <p>Release:{serie.first_air_date}</p>
                                 <p>Cast: {serie.cast}</p>
-                                <p>Rating: {serie.vote_average}</p>
                             </div>
                         )
                     })

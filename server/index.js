@@ -16,11 +16,6 @@ const password = process.env.PASSWORD;
 const cluster = process.env.CLUSTER;
 const dbname = process.env.DBNAME;
 
-const url = `mongodb+srv://${username}:${password}@${cluster}.mongodb.net/${dbname}?retryWrites=true&w=majority`;
-mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
 const verifyJwt = jwt({
     secret: jwks.expressJwtSecret({
         cache: true,
@@ -33,19 +28,28 @@ const verifyJwt = jwt({
     algorithms: ['RS256']
 });
 
+app.use(cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+    credentials: true
+}));
 app.use(verifyJwt)
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors())
 app.use(bodyParser.json())
 
+const url = `mongodb+srv://${username}:${password}@${cluster}.mongodb.net/${dbname}?retryWrites=true&w=majority`;
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
 app.post("/rate-movie", (req, res) => {
-    ratingModel.create({ 
+    ratingModel.create({
         _id: new ObjectID(),
-        title: title.req.body, 
+        title: title.req.body,
         rate: rate.req.body
     }, function (err, data) {
         if (err) return console.log(err);
-      });
+    });
 })
 
 app.get("/movies", async (req, res) => {

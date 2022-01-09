@@ -47,7 +47,6 @@ function MovieList({ movieList = [], input = '' }) {
                                 <p>{movie.overview}</p>
                                 <p>Release:{movie.release_date}</p>
                                 <p>Cast: {movie.cast.slice(0, 2)}</p>
-                                <p>Rating: {movie.vote_average}</p>
                             </div>
                         )
                     })
