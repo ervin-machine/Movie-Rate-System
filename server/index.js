@@ -31,7 +31,7 @@ const verifyJwt = jwt({
     audience: 'Unique auth',
     issuer: 'https://dev-t3-qedh1.us.auth0.com/',
     algorithms: ['RS256']
-}).unless({ path: ['/rate-movie']});
+});
 
 app.use(verifyJwt)
 app.use(bodyParser.urlencoded({ extended: true }))
