@@ -1,0 +1,10 @@
+.serie-list {
+    width: 100%;
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-around;
+}
+.cover-img {
+    width: 300px;
+    height: auto;
+}
