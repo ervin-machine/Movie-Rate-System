@@ -45,7 +45,6 @@ function RateMovie({ movieListRate = [], input = '' }) {
     const [rate, setRate] = useState(0);
     const [title, setTitle] = useState('')
 
-
     const handleSearch = () => {
         return movieListRate.filter(movie => {
             if (input === "") {
@@ -56,18 +55,16 @@ function RateMovie({ movieListRate = [], input = '' }) {
         })
     }
 
-    const handleRate = async () => {
-        const token = await getAccessTokenSilently()
-        Axios.post('http://localhost:4000/rate-movie', {
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                authorization: `Bearer ${token}`
-            },
+    const handleRate = () => {
+        Axios.post("http://localhost:4000/rate-movie", {
             title: title,
             rate: rate
-        }).then((response) => {
         })
+            .then(function (response) {
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     return (

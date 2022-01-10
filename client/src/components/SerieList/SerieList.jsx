@@ -3,36 +3,22 @@ import './SerieList.css'
 
 function SerieList({ serieList = [], input = '' }) {
     const [showMore, setShowMore] = useState(10);
+    const phrases = ["stars", "at least", "after", "older then"]
 
     const handleShowMore = () => {
         setShowMore(showMore + 10);
     }
 
-    const handleSearch = () => {
-        return serieList.filter(serie => {
-            const cast = serie.cast.toString().split(" ").join("")
-            if (input === "") {
-                return serie
-            } else if (serie.name.substr(2).toLowerCase().includes(input.substr(2).toLowerCase())) {
-                return serie
-            } else if (serie.first_air_date.substr(2).toLowerCase().includes(input.substr(2).toLowerCase())) {
-                return serie
-            } else if (serie.overview.substr(2).toLowerCase().includes(input.substr(2).toLowerCase())) {
-                return serie
-            } else if(cast.substr(2).toLowerCase().includes(input.substr(2).toLowerCase())) {
-                return serie
-            } else if(serie.cast.toString().substr(2).toLowerCase().includes(input.substr(2).toLowerCase())) {
-                return serie
-            } 
-        })
-    }
+    const searchHandle = serieList.filter(serie => 
+        Object.values(serie).some(val => typeof val === "string" && val.toLowerCase().includes(input.substr(2).toLowerCase()))
+    );
     
     return (
         <>
             <div className='serie-list'>
-                {handleSearch()
+                {searchHandle
                     .slice(0, showMore)
-                    .sort((a, b) => b.rating - a.rating)
+                    .sort((a, b) => b.vote_average - a.vote_average)
                     .map((serie) => {
                         return (
                             <div key={serie.name}>
@@ -43,12 +29,13 @@ function SerieList({ serieList = [], input = '' }) {
                                 <h3>{serie.name}</h3>
                                 <p>{serie.overview}</p>
                                 <p>Release:{serie.first_air_date}</p>
+                                <p>Average rate: {serie.vote_average}</p>
                                 <p>Cast: {serie.cast}</p>
                             </div>
                         )
                     })
                 }
-                <button onClick={handleShowMore}>Show More</button>
+                {showMore < serieList.length ? <button onClick={handleShowMore}>Show More</button>  : null }
             </div>
         </>
     )

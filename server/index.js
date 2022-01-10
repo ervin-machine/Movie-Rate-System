@@ -26,11 +26,10 @@ const verifyJwt = jwt({
     audience: 'Unique auth',
     issuer: 'https://dev-t3-qedh1.us.auth0.com/',
     algorithms: ['RS256']
-});
+}).unless({ path: "/rate-movie" });
 
 app.use(cors({
     origin: "*",
-    methods: ["GET", "POST"],
     credentials: true
 }));
 app.use(verifyJwt)
@@ -43,13 +42,22 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 app.post("/rate-movie", (req, res) => {
-    ratingModel.create({
+    const { title, rate } = req.body;
+
+    var new_user = new ratingModel({
         _id: new ObjectID(),
-        title: title.req.body,
-        rate: rate.req.body
-    }, function (err, data) {
-        if (err) return console.log(err);
-    });
+        title: title,
+        rate: rate
+    })
+      
+    new_user.save(function(err,result){
+        if (err){
+            console.log(err);
+        }
+        else{
+            console.log(result)
+        }
+    })
 })
 
 app.get("/movies", async (req, res) => {
