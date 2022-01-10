@@ -44,13 +44,13 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 app.post("/rate-movie", (req, res) => {
     const { title, rate } = req.body;
 
-    var rate = new ratingModel({
+    var newRate = new ratingModel({
         _id: new ObjectID(),
         title: title,
         rate: rate
     })
       
-    rate.save(function(err,result){
+    newRate.save(function(err,result){
         if (err){
             console.log(err);
         }
